@@ -13,10 +13,7 @@ class Task:
 	@property
 	def has_end_time(self):
 		""" Boolean if task has end time or not """
-		if self.end[-1:]=='-':
-			return True
-		else:
-			return False
+		return True if self.end[-1:]=='-' else False
 
 
 	@property
@@ -24,10 +21,7 @@ class Task:
 		""" Boolean if current time within task start and end time """
 		now=mktime(datetime.now().timetuple())
 
-		if now >= self.start_unixtimestamp and now <= self.end_unixtimestamp:
-			return True
-		else:
-			return False
+		return True if now >= self.start_unixtimestamp and now <= self.end_unixtimestamp else False
 
 
 	@property
