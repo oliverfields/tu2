@@ -82,7 +82,7 @@ def close_mode():
 
 	for task in tl.tasks:
 		current_time=datetime.now().strftime('%H%M')
-		if task.end[-1:]=='-':
+		if task.closed:
 
 			print("Task '%s' started on %s at %s\nEnter end time as 'HHMM' or blank for %s, 'i' ignores, Ctrl+C quits:" % (task.name, task.start[:8], task.start[9:13], current_time))
 
@@ -154,7 +154,7 @@ def report_mode():
 		except ValueError as e:
 			report_error(1, "%s in '%s' on line %s " % (e, file, i))
 
-		if task.end[-1:] == '-':
+		if task.closed:
 			no_end_time='?'
 		else:
 			no_end_time=' '
@@ -196,5 +196,5 @@ def current_mode():
 	tl = TaskList.TaskList(file)
 
 	for task in tl.tasks:
-		if task.end[-1:]=='-':
+		if task.closed:
 			print('%s (started %s:%s, %sh ago)' % (task.name, task.start[8:11], task.start[11:13], duration_pretty(task.duration)))
