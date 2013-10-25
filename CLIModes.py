@@ -156,7 +156,7 @@ def report_mode():
 	for line in report_lines:
 		print('%s   %s   %s' % (line['date'], line['duration'], line['name']))
 
-	print('\nTotal %sh, period %s - %s @ %s' % (tl.duration_pretty(tl.total_duration), first_date, last_date, datetime.now().strftime('%Y%m%d %H%M')))
+	print('\n%sh between %s and %s @ %s' % (tl.duration_pretty(tl.total_duration), first_date, last_date, datetime.now().strftime('%Y%m%d %H:%M')))
 
 
 def current_mode():
