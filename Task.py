@@ -11,7 +11,7 @@ class Task:
 
 
 	@property
-	def closed(self):
+	def has_end_time(self):
 		""" Boolean if task has end time or not """
 		if self.end[-1:]=='-':
 			return True
@@ -20,30 +20,47 @@ class Task:
 
 
 	@property
-	def duration(self):
-		""" Calculate time between start and end timestamps """
+	def in_progress(self):
+		""" Boolean if current time within task start and end time """
+		now=mktime(datetime.now().timetuple())
 
-		if self.closed:
-			end_datetime=datetime.now()
+		if now >= self.start_unixtimestamp and now <= self.end_unixtimestamp:
+			return True
 		else:
-			try:
-				end_datetime=datetime.strptime(self.end, '%Y%m%d %H%M')
-			except ValueError:
-				raise  ValueError("Invalid end time '%s'" % self.end)
+			return False
 
+
+	@property
+	def start_unixtimestamp(self):
 		try:
-			start_datetime=datetime.strptime(self.start, '%Y%m%d %H%M')
+			dt=datetime.strptime(self.start, '%Y%m%d %H%M')
+			return mktime(dt.timetuple())
 		except ValueError:
 			raise Exception("Invalid start time '%s'" % self.start)
 
 
-		# Create unix timestamp
-		start_ts=mktime(start_datetime.timetuple())
-		end_ts=mktime(end_datetime.timetuple())
+	@property
+	def end_unixtimestamp(self):
+		if self.has_end_time:
+			dt=datetime.now()
+		else:
+			try:
+				dt=datetime.strptime(self.end, '%Y%m%d %H%M')
+				return mktime(dt.timetuple())
+			except ValueError:
+				raise  ValueError("Invalid end time '%s'" % self.end)
+
+
+	@property
+	def duration(self):
+		""" Calculate time between start and end timestamps """
+
+		start_ts=self.start_unixtimestamp
+		end_ts=self.end_unixtimestamp
 
 		# If start time in future and no end time cannot compute
 		# duration, else assume end is now
-		if self.closed and start_ts >= end_ts:
+		if self.has_end_time and start_ts >= end_ts:
 			duration=0
 		elif start_ts > end_ts:
 			report_error(1,'Start date cannot be greater than end date (%s - %s)' % (start_datetime, end_datetime))

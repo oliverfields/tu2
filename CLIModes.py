@@ -1,7 +1,6 @@
 ''' CLI modes '''
 
 from datetime import datetime
-from time import strptime
 import sys
 import TaskList
 from Utility import usage, report_error
@@ -82,9 +81,9 @@ def close_mode():
 
 	for task in tl.tasks:
 		current_time=datetime.now().strftime('%H%M')
-		if task.closed:
+		if task.has_end_time:
 
-			print("Task '%s' started on %s at %s\nEnter end time as 'HHMM' or blank for %s, 'i' ignores, Ctrl+C quits:" % (task.name, task.start[:8], task.start[9:13], current_time))
+			print("Task '%s' started on %s at %s\nEnter end time as 'HHMM' or blank for %s, 'i' ignores, Ctrl+C quits:" % (task.name, datetime.fromtimestamp(task.start_unixtimestamp).strftime('%Y%m%d'), datetime.fromtimestamp(task.start_unixtimestamp).strftime('%H%M'), current_time))
 
 			while True:
 				try:
@@ -130,19 +129,17 @@ def report_mode():
 
 	tl = TaskList.TaskList(file)
 
-	#print('Date      Hours    Name\n----      -----    ----')
-
 	for task in tl.tasks:
 		i+=1
 
-		if task.closed:
+		if task.has_end_time:
 			no_end_time='?'
 		else:
 			no_end_time=' '
 
 		hours='%sh%s' % (tl.duration_pretty(task.duration), no_end_time)
 
-		report_lines.append({'date': task.start[:8], 'duration': hours, 'name': task.name})
+		report_lines.append({'date': datetime.fromtimestamp(task.start_unixtimestamp).strftime('%Y%m%d'), 'duration': hours, 'name': task.name})
 
 		if max_length < len(hours):
 			max_length=len(hours)
@@ -163,7 +160,7 @@ def report_mode():
 
 
 def current_mode():
-	""" Print tasks not closed (no end time) """
+	""" Print tasks that are currently in progress """
 
 	if len(sys.argv) != 3:
 		usage('current')
@@ -177,5 +174,5 @@ def current_mode():
 	tl = TaskList.TaskList(file)
 
 	for task in tl.tasks:
-		if task.closed:
-			print('%s (started %s:%s, %sh ago)' % (task.name, task.start[8:11], task.start[11:13], tl.duration_pretty(task.duration)))
+		if task.in_progress:
+			print('%s (started %s:%s, elapsed %sh)' % (task.name, datetime.fromtimestamp(task.start_unixtimestamp).strftime('%H'), datetime.fromtimestamp(task.start_unixtimestamp).strftime('%M'), tl.duration_pretty(task.duration)))
