@@ -109,25 +109,10 @@ def close_mode():
 	tl.save_tasks_to_file(file)
 
 
-def duration_pretty(seconds):
-	""" Pretty print duration """
-
-	hours, remainder=divmod(seconds, 3600)
-	mins, secs=divmod(remainder, 60)
-
-	rounded_mins=str(round(float(mins) / float(60),1))[2:]
-
-	#pretty_string='%s.%s\t%s:%s' % (hours, rounded_mins, hours, mins)
-	pretty_string='%s.%s' % (hours, rounded_mins)
-
-	return pretty_string
-
-
 def report_mode():
 	""" Compile report showing time spent on each task """
 
 	no_end_time='?'
-	total_secs=0
 	report_lines=[]
 	max_length=5
 	first_date=None
@@ -149,17 +134,13 @@ def report_mode():
 
 	for task in tl.tasks:
 		i+=1
-		try:
-			total_secs+=task.duration
-		except ValueError as e:
-			report_error(1, "%s in '%s' on line %s " % (e, file, i))
 
 		if task.closed:
 			no_end_time='?'
 		else:
 			no_end_time=' '
 
-		hours='%sh%s' % (duration_pretty(task.duration), no_end_time)
+		hours='%sh%s' % (tl.duration_pretty(task.duration), no_end_time)
 
 		report_lines.append({'date': task.start[:8], 'duration': hours, 'name': task.name})
 
@@ -178,7 +159,7 @@ def report_mode():
 	for line in report_lines:
 		print('%s   %s   %s' % (line['date'], line['duration'], line['name']))
 
-	print('\nTotal %sh, period %s - %s @ %s' % (duration_pretty(total_secs), first_date, last_date, datetime.now().strftime('%Y%m%d %H%M')))
+	print('\nTotal %sh, period %s - %s @ %s' % (tl.duration_pretty(tl.total_duration), first_date, last_date, datetime.now().strftime('%Y%m%d %H%M')))
 
 
 def current_mode():
@@ -197,4 +178,4 @@ def current_mode():
 
 	for task in tl.tasks:
 		if task.closed:
-			print('%s (started %s:%s, %sh ago)' % (task.name, task.start[8:11], task.start[11:13], duration_pretty(task.duration)))
+			print('%s (started %s:%s, %sh ago)' % (task.name, task.start[8:11], task.start[11:13], tl.duration_pretty(task.duration)))
