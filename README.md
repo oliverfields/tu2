@@ -4,26 +4,31 @@ Simple CLI task time tracking. Records saved to human readable and editable plai
 
 ## Start tracking time spent on task
 
-tu2 add <task name> [HHMM|now][-HHMM|-now] <file>
+    tu2 add <task name> [HHMM|now][-HHMM|-now] <file>
 
 
 ## Close open tasks
 
-tu2 close <file>
+    tu2 close <file>
 
 
 ## Timeusage report
 
 
-tu2 report <file>
+    tu2 report <file>
 
 ### Format
 
-YYYYMMDD   <hours>   <task name>
-..
-<hours> between <first record> and <last record> @ <now>
+    YYYYMMDD   <hours>   <task name>
+    ..
+    <hours> between <first record> and <last record> @ <now>
 
 
 ## Show current project
 
-tu2 current <file>
+    tu2 current <file>
+
+
+## File structure
+
+    YYYYMMDD HHMM	YYYYMMDD HHMM	Name
