@@ -21,7 +21,7 @@ def usage(mode='default'):
 	executable_name = os.path.basename(sys.argv[0])
 
 	usage_message = {
-		'add': ' <task> [HHMM|now][-HHMM|-now]  <file|stdin>',
+		'add': ' <task> [HHMM|now][-HHMM|-now] <file|stdin>',
 		'close': ' <file|stdin>',
 		'report': ' <file|stdin>',
 		'current': ' <file|stdin>',
