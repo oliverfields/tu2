@@ -65,7 +65,6 @@ def add_mode():
 def close_mode():
 	""" Loop over open tasks and offer option to close them """
 
-	current_date=datetime.now().strftime('%Y%m%d')
 	end_time_user_input=None
 
 	if len(sys.argv) != 3:
@@ -80,9 +79,10 @@ def close_mode():
 	tl = TaskList.TaskList(file)
 
 	for task in tl.tasks:
+		current_date=datetime.now().strftime('%Y%m%d')
 		current_time=datetime.now().strftime('%H%M')
 
-		if task.has_end_time:
+		if task.has_end_time == False:
 
 			print("Task '%s' started on %s at %s\nEnter end time as 'HHMM' or blank for %s, 'i' ignores, Ctrl+C quits:" % (task.name, datetime.fromtimestamp(task.start_unixtimestamp).strftime('%Y%m%d'), datetime.fromtimestamp(task.start_unixtimestamp).strftime('%H%M'), current_time))
 
