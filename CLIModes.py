@@ -81,6 +81,7 @@ def close_mode():
 
 	for task in tl.tasks:
 		current_time=datetime.now().strftime('%H%M')
+
 		if task.has_end_time:
 
 			print("Task '%s' started on %s at %s\nEnter end time as 'HHMM' or blank for %s, 'i' ignores, Ctrl+C quits:" % (task.name, datetime.fromtimestamp(task.start_unixtimestamp).strftime('%Y%m%d'), datetime.fromtimestamp(task.start_unixtimestamp).strftime('%H%M'), current_time))

@@ -13,7 +13,7 @@ class Task:
 	@property
 	def has_end_time(self):
 		""" Boolean if task has end time or not """
-		return True if self.end[-1:]=='-' else False
+		return False if self.end[-1:]=='-' else True
 
 
 	@property
@@ -35,8 +35,10 @@ class Task:
 
 	@property
 	def end_unixtimestamp(self):
-		if self.has_end_time:
+
+		if self.has_end_time == False:
 			dt=datetime.now()
+			return mktime(dt.timetuple())
 		else:
 			try:
 				dt=datetime.strptime(self.end, '%Y%m%d %H%M')
