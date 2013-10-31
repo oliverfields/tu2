@@ -134,9 +134,9 @@ def report_mode():
 		i+=1
 
 		if task.has_end_time:
-			no_end_time='?'
+			no_end_time=''
 		else:
-			no_end_time=' '
+			no_end_time='?'
 
 		hours='%sh%s' % (tl.duration_pretty(task.duration), no_end_time)
 
@@ -176,4 +176,9 @@ def current_mode():
 
 	for task in tl.tasks:
 		if task.in_progress:
-			print('%s (started %s:%s, elapsed %sh)' % (task.name, datetime.fromtimestamp(task.start_unixtimestamp).strftime('%H'), datetime.fromtimestamp(task.start_unixtimestamp).strftime('%M'), tl.duration_pretty(task.duration)))
+			if task.has_end_time:
+				end_time='%s:%s' % (datetime.fromtimestamp(task.end_unixtimestamp).strftime('%H'), datetime.fromtimestamp(task.end_unixtimestamp).strftime('%M'))
+			else:
+				end_time=datetime.now().strftime('%H:%M?')
+
+			print('%s (%s:%s-%s, %sh)' % (task.name, datetime.fromtimestamp(task.start_unixtimestamp).strftime('%H'), datetime.fromtimestamp(task.start_unixtimestamp).strftime('%M'), end_time, tl.duration_pretty(task.duration)))

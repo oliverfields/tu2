@@ -9,6 +9,21 @@ class Task:
 		self.start = start
 		self.end = end
 
+		self.check()
+
+
+	def check(self):
+		""" Sanity check timestamps """
+
+		try:
+			test=self.start_unixtimestamp
+		except:
+			raise
+
+		try:
+			test=self.end_unixtimestamp
+		except:
+			raise
 
 	@property
 	def has_end_time(self):

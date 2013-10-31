@@ -53,8 +53,7 @@ class TaskList():
 					try:
 						self.add_task(name, start, end)
 					except Exception, e:
-						print(e)
-						report_error(1,"Unable to load task from line %s in '%s' -> %s" % (print_line, file,line))
+						report_error(1,"Unable to load task from line %s in '%s' -> %s" % (print_line, file,line.strip()))
 
 			finally:
 				task_file.close()
@@ -66,6 +65,7 @@ class TaskList():
 		""" Add task to list """
 
 		task=Task.Task(name, start, end)
+
 		self.tasks.append(task)
 
 
