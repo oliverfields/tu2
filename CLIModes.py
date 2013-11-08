@@ -64,14 +64,17 @@ def add_mode():
 
 def close_mode():
 	""" Loop over open tasks and offer option to close them """
-
+	end_time_arg=None
 	end_time_user_input=None
 
-	if len(sys.argv) != 3:
+	if len(sys.argv) == 3:
+		file=sys.argv[2]
+	elif len(sys.argv) == 4:
+		end_time_arg=sys.argv[2]
+		file=sys.argv[3]
+	else:
 		usage('close')
 		report_error(1, 'Wrong number of arguments')
-
-	file=sys.argv[2]
 
 	if file=='-':
 		file='/dev/stdin'
@@ -80,7 +83,11 @@ def close_mode():
 
 	for task in tl.tasks:
 		current_date=datetime.now().strftime('%Y%m%d')
-		current_time=datetime.now().strftime('%H%M')
+
+		if end_time_arg != None:
+			current_time = end_time_arg
+		else:
+			current_time=datetime.now().strftime('%H%M')
 
 		if task.has_end_time == False:
 
