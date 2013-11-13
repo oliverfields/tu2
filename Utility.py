@@ -22,7 +22,7 @@ def usage(mode='default'):
 
 	usage_message = {
 		'add': ' <task> [HHMM|now][-HHMM|-now] <file|stdin>',
-		'close': '  [HHMM] <file|stdin>',
+		'close': ' [HHMM] <file|stdin>',
 		'report': ' <file|stdin>',
 		'current': ' <file|stdin>',
 	}

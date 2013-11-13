@@ -125,3 +125,16 @@ class TaskList():
 				report_error(1, "Unable to calculate total duration")
 
 		return total_secs
+
+	@property
+	def open_tasks(self):
+		""" Boolean if open tasks exist in task list """
+
+		open_tasks=False
+
+		for task in self.tasks:
+			if task.has_end_time:
+				open_tasks=True
+				break
+
+		return open_tasks

@@ -57,13 +57,16 @@ def add_mode():
 			end=make_time(period_split[1])
 
 	tl = TaskList.TaskList(file)
+
+	close_tasks_prompt(tl, start[9:13])
+
 	tl.add_task(name, start, end)
 
 	tl.save_tasks_to_file(file)
 
 
 def close_mode():
-	""" Loop over open tasks and offer option to close them """
+	""" Close open tasks """
 	end_time_arg=None
 	end_time_user_input=None
 
@@ -79,9 +82,17 @@ def close_mode():
 	if file=='-':
 		file='/dev/stdin'
 
-	tl = TaskList.TaskList(file)
+	tl=TaskList.TaskList(file)
 
-	for task in tl.tasks:
+	close_tasks_prompt(tl, end_time_arg)
+
+	tl.save_tasks_to_file(file)
+
+
+def close_tasks_prompt(tasklist, end_time_arg=None):
+	""" Loop over open tasks and offer option to close them """
+
+	for task in tasklist.tasks:
 		current_date=datetime.now().strftime('%Y%m%d')
 
 		if end_time_arg != None:
@@ -112,8 +123,6 @@ def close_mode():
 						break
 					else:
 						print('Invalid time format, must be HHMM')
-
-	tl.save_tasks_to_file(file)
 
 
 def report_mode():
