@@ -105,9 +105,9 @@ class TaskList():
 		except TypeError:
 			report_error(1,"Duration seconds must be an integer")
 
-		rounded_mins=str(round(float(mins) / float(60),1))[2:]
+		mins=(float(mins)/float(60))
+		rounded_mins=str(mins)[2:3]
 
-		#pretty_string='%s.%s\t%s:%s' % (hours, rounded_mins, hours, mins)
 		pretty_string='%s.%s' % (hours, rounded_mins)
 
 		return pretty_string
