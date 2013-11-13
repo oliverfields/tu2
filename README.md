@@ -9,7 +9,7 @@ Simple CLI task time tracking. Records saved to human readable and editable plai
 
 ## Close open tasks
 
-    tu2 close <file>
+    tu2 close [HHMM] <file>
 
 
 ## Timeusage report
@@ -29,6 +29,6 @@ Simple CLI task time tracking. Records saved to human readable and editable plai
     tu2 current <file>
 
 
-## File structure
+## Time usage data file structure
 
     YYYYMMDD HHMM	YYYYMMDD HHMM	Name
