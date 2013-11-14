@@ -71,10 +71,8 @@ class Task:
 
 		# If start time in future and no end time cannot compute
 		# duration, else assume end is now
-		if self.has_end_time and start_ts >= end_ts:
-			duration=0
-		elif start_ts > end_ts:
-			report_error(1,'Start date cannot be greater than end date (%s - %s)' % (start_datetime, end_datetime))
+		if start_ts > end_ts:
+			report_error(1,'Start date cannot be greater than end date (%s - %s)' % (self.start, self.end))
 		else:
 			duration=int(end_ts - start_ts)
 
