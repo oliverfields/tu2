@@ -5,6 +5,8 @@ import sys
 import TaskList
 from Utility import usage, report_error
 import re
+import time
+
 
 def make_time(argument):
 	""" Convert command line argument string to datetime object """
@@ -92,37 +94,70 @@ def close_mode():
 def close_tasks_prompt(tasklist, end_time_arg=None):
 	""" Loop over open tasks and offer option to close them """
 
+	today=datetime.now()
+
 	for task in tasklist.tasks:
-		current_date=datetime.now().strftime('%Y%m%d')
+		current_date=today.strftime('%Y%m%d')
 
 		if end_time_arg != None:
 			current_time = end_time_arg
 		else:
-			current_time=datetime.now().strftime('%H%M')
+			current_time=today.strftime('%H%M')
 
 		if task.has_end_time == False:
 
-			print("Task '%s' started on %s at %s\nEnter end time as 'HHMM' or blank for %s, 'i' ignores, Ctrl+C quits:" % (task.name, datetime.fromtimestamp(task.start_unixtimestamp).strftime('%Y%m%d'), datetime.fromtimestamp(task.start_unixtimestamp).strftime('%H%M'), current_time))
+			stdt=datetime.fromtimestamp(task.start_unixtimestamp)
 
-			while True:
-				try:
-					end_time_user_input=raw_input('-> ')
-				except KeyboardInterrupt:
-					print('\n')
-					sys.exit(0)
+			# If start date is not today
+			if abs((today - stdt).days) > 0:
+				print 'start date is older than now'
 
-				if end_time_user_input=='':
-					task.end='%s %s' % (current_date, current_time)
-					break
-				elif end_time_user_input == 'i':
-					break
-				else:
-					p = re.compile('^[0-2][0-9][0-6][0-9]$')
-					if p.match(end_time_user_input):
-						task.end='%s %s' % (current_date, end_time_user_input)
+				print("Task '%s' was started on %s at %s\nEnter end date and time as 'YYYYMMDD HHMM' or blank for %s %s, 'i' ignores, Ctrl+C quits:" % (task.name, datetime.fromtimestamp(task.start_unixtimestamp).strftime('%Y%m%d'), datetime.fromtimestamp(task.start_unixtimestamp).strftime('%H%M'), current_date, current_time))
+
+				while True:
+					try:
+						end_time_user_input=raw_input('-> ')
+					except KeyboardInterrupt:
+						print('\n')
+						sys.exit(0)
+
+					if end_time_user_input=='':
+						task.end='%s %s' % (current_date, current_time)
+						break
+					elif end_time_user_input == 'i':
 						break
 					else:
-						print('Invalid time format, must be HHMM')
+						p = re.compile('^2[0-9][0-9][0-9][0-1][0-9][0-3][0-9] [0-2][0-9][0-6][0-9]$')
+						if p.match(end_time_user_input):
+							task.end=end_time_user_input
+							break
+						else:
+							print('Invalid format, must be YYYYMMDD HHMM')
+
+			# If start date is today
+			else:
+
+				print("Task '%s' started on %s at %s\nEnter end time as 'HHMM' or blank for %s, 'i' ignores, Ctrl+C quits:" % (task.name, datetime.fromtimestamp(task.start_unixtimestamp).strftime('%Y%m%d'), datetime.fromtimestamp(task.start_unixtimestamp).strftime('%H%M'), current_time))
+
+				while True:
+					try:
+						end_time_user_input=raw_input('-> ')
+					except KeyboardInterrupt:
+						print('\n')
+						sys.exit(0)
+
+					if end_time_user_input=='':
+						task.end='%s %s' % (current_date, current_time)
+						break
+					elif end_time_user_input == 'i':
+						break
+					else:
+						p = re.compile('^[0-2][0-9][0-6][0-9]$')
+						if p.match(end_time_user_input):
+							task.end='%s %s' % (current_date, end_time_user_input)
+							break
+						else:
+							print('Invalid format, must be HHMM')
 
 
 def report_mode():
