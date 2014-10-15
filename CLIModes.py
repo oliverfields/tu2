@@ -106,12 +106,10 @@ def close_tasks_prompt(tasklist, end_time_arg=None):
 
 		if task.has_end_time == False:
 
-			stdt=datetime.fromtimestamp(task.start_unixtimestamp)
+			stdt=datetime.fromtimestamp(task.start_unixtimestamp).strftime('%Y%m%d')
 
 			# If start date is not today
-			if abs((today - stdt).days) > 0:
-				print 'start date is older than now'
-
+			if stdt != current_date:
 				print("Task '%s' was started on %s at %s\nEnter end date and time as 'YYYYMMDD HHMM' or blank for %s %s, 'i' ignores, Ctrl+C quits:" % (task.name, datetime.fromtimestamp(task.start_unixtimestamp).strftime('%Y%m%d'), datetime.fromtimestamp(task.start_unixtimestamp).strftime('%H%M'), current_date, current_time))
 
 				while True:
