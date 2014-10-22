@@ -110,7 +110,7 @@ def close_tasks_prompt(tasklist, end_time_arg=None):
 
 			# If start date is not today
 			if stdt != current_date:
-				print("Task '%s' was started on %s at %s\nEnter end date and time as 'YYYYMMDD HHMM' or blank for %s %s, 'i' ignores, Ctrl+C quits:" % (task.name, datetime.fromtimestamp(task.start_unixtimestamp).strftime('%Y%m%d'), datetime.fromtimestamp(task.start_unixtimestamp).strftime('%H%M'), current_date, current_time))
+				print("Task '%s' was started on %s at %s\nEnter end date and time as 'YYYYMMDD HHMM' or HHMM for %s HHMM or blank for %s %s, 'i' ignores, Ctrl+C quits:" % (task.name, datetime.fromtimestamp(task.start_unixtimestamp).strftime('%Y%m%d'), datetime.fromtimestamp(task.start_unixtimestamp).strftime('%H%M'), datetime.fromtimestamp(task.start_unixtimestamp).strftime('%Y%m%d'), current_date, current_time))
 
 				while True:
 					try:
@@ -125,8 +125,12 @@ def close_tasks_prompt(tasklist, end_time_arg=None):
 					elif end_time_user_input == 'i':
 						break
 					else:
-						p = re.compile('^2[0-9][0-9][0-9][0-1][0-9][0-3][0-9] [0-2][0-9][0-6][0-9]$')
-						if p.match(end_time_user_input):
+						phours = re.compile('[0-2][0-9][0-6][0-9]$')
+						pdatehours = re.compile('^2[0-9][0-9][0-9][0-1][0-9][0-3][0-9] [0-2][0-9][0-6][0-9]$')
+						if phours.match(end_time_user_input):
+							task.end='%s %s' % (stdt, end_time_user_input)
+							break
+						elif pdatehours.match(end_time_user_input):
 							task.end=end_time_user_input
 							break
 						else:
